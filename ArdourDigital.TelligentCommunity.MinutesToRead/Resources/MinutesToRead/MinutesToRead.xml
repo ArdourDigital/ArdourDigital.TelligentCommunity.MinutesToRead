@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<scriptedContentFragments>
+  <scriptedContentFragment
+    name="${resource:Fragment_MinutesToRead_Name}"
+    cssClass="minutes-to-read"
+    description="${resource:Fragment_MinutesToRead_Description}"
+    instanceIdentifier="84862e73-8367-43f3-a5ba-103a4b4dc9a0"
+    isCacheable="true"
+    varyCacheByUser="true"
+    showHeaderByDefault="false">
+    <contentScript>
+      <![CDATA[
+        #set($content = $core_v2_content.Current)
+        
+        #if (!$content)
+          $core_v2_widget.Hide()
+        #end
+        
+        #set($minutesToRead = $ardour_v1_minutesToRead.GetNumberOfMinutesToRead($content.ContentId, $content.ContentTypeId))
+        
+        #if (!$minutesToRead)
+          $core_v2_widget.Hide()
+        #end        
+        
+        #set($formatString = $core_v2_language.GetResource("Fragment_MinutesToRead_MinutesToReadFormat"))
+        
+        #if ($minutesToRead == 1)
+          #set($formatString = $core_v2_language.GetResource("Fragment_MinutesToRead_MinuteToReadFormat"))
+        #end
+        
+        <span class="minutesToRead">
+          $core_v2_language.FormatString($formatString, $core_v2_language.FormatNumber($minutesToRead))
+        </span>
+      ]]>
+    </contentScript>
+    <languageResources>
+      <language key="en-us">
+        <resource name="Fragment_MinutesToRead_Name">Ardour Digital - Minutes to Read</resource>
+        <resource name="Fragment_MinutesToRead_Description">Show the estimated number of minutes to read the current content.</resource>
+        <resource name="Fragment_MinutesToRead_MinutesToReadFormat">{0} minutes read.</resource>
+        <resource name="Fragment_MinutesToRead_MinuteToReadFormat">{0} minute read.</resource>
+      </language>
+    </languageResources>
+  </scriptedContentFragment>
+</scriptedContentFragments>
